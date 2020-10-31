@@ -1,6 +1,6 @@
 # Files
 *.txt
-*config.py
+scippconfig.py
 # Folders
 =======
 .DS_Store

@@ -1,8 +1,8 @@
-name: ess-notebook-latest
+name: ess-notebook
 
 channels:
   - conda-forge
-  - scipp/label/dev
+  - scipp
 
 dependencies:
   - scipp-ess
