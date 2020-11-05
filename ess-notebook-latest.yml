@@ -10,3 +10,8 @@ dependencies:
   - jupyter
   - ipympl
   - mantid-framework
+  - nbformat
+  - yapf
+  - pip
+    - p2j
+
