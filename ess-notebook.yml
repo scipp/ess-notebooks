@@ -1,0 +1,12 @@
+name: ess-notebook
+
+channels:
+  - conda-forge
+  - scipp
+  - mantid
+
+dependencies:
+  - scipp-ess
+  - jupyter
+  - ipympl
+  - mantid-framework

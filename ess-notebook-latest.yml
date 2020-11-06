@@ -1,0 +1,17 @@
+name: ess-notebook-latest
+
+channels:
+  - conda-forge
+  - scipp/label/dev
+  - mantid/label/nightly
+
+dependencies:
+  - scipp-ess
+  - jupyter
+  - ipympl
+  - mantid-framework
+  - nbformat
+  - yapf
+  - pip
+    - p2j
+
