@@ -41,7 +41,7 @@ stages:
                  source activate ess-notebook
              fi
              git clone https://github.com/scipp/ess-notebooks-data.git data
-             python make_config.py ${PWD}/data
+             python make_config.py ${PWD}/data/ess/v20/imaging
              mkdir tests
              cp scippconfig.py tests/
              find . -not -path "*/\.*" -type f -name "*.ipynb"\
