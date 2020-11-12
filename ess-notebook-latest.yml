@@ -13,6 +13,3 @@ dependencies:
   - nbformat
   - yapf
   - git
-  - pip
-    - p2j
-
