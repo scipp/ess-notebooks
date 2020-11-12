@@ -40,7 +40,7 @@ stages:
                  conda env create -f ess-notebook.yml
                  source activate ess-notebook
              fi
-             git clone git@github.com:scipp/ess-notebooks-data.git data
+             git clone https://github.com/scipp/ess-notebooks.git data
              python make_config.py ${PWD}/data
              mkdir tests
              cp scippconfig.py tests/
