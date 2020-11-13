@@ -21,7 +21,8 @@ stages:
       - job: 'make_notebooks'
         displayName: 'Make Notebooks'
         timeoutInMinutes: 30
-        pool: 'Default'
+        pool:
+          vmImage: 'ubuntu-18.04'
         steps:
           - checkout: self
             submodules: true
