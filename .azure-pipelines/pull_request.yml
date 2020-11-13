@@ -20,7 +20,7 @@ stages:
     jobs:
       - job: 'make_notebooks'
         displayName: 'Make Notebooks'
-        timeoutInMinutes: 20
+        timeoutInMinutes: 30
         pool:
           vmImage: 'ubuntu-18.04'
         steps:
