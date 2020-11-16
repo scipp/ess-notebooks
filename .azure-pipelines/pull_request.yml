@@ -24,8 +24,6 @@ stages:
         pool:
           vmImage: 'ubuntu-18.04'
         steps:
-          - checkout: self
-            submodules: true
           - bash: echo "##vso[task.prependpath]$CONDA/bin"
             displayName: 'add conda to PATH'
           - bash: |
@@ -36,10 +34,22 @@ stages:
              if [ $(is_release) == False ]; then
                  conda env create -f ess-notebook-latest.yml
                  source activate ess-notebook-latest
+                 echo '##vso[task.setvariable variable=conda_env]ess-notebook-latest'
              else
                  conda env create -f ess-notebook.yml
                  source activate ess-notebook
+                 echo '##vso[task.setvariable variable=conda_env]ess-notebook'
              fi
+            displayName: 'setup conda environment'
+          - bash: |
+             set -ex
+             source activate ${{ variables.conda_env }}
+             git clone https://github.com/scipp/ess-notebooks.git notebooks
+            displayName: 'clone notebooks'
+          - bash: |
+             set -ex
+             source activate ${{ variables.conda_env }}
+             cd notebooks
              git clone https://github.com/scipp/ess-notebooks-data.git data
              python make_config.py ${PWD}/data/ess/v20/imaging
              mkdir tests
@@ -48,3 +58,4 @@ stages:
               | xargs jupyter nbconvert --to python --output-dir tests\
               --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
              find tests -not -path "tests/scippconfig.py" -type f -name "*.py" | xargs python
+            displayName: 'execute notebook'
