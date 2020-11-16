@@ -1,24 +1,14 @@
 trigger:
-  branches:
-    exclude:
-      - '*'
+  - master
 
-pr:
-  autoCancel: true
-  branches:
-    include:
-      - '*'
-
-variables:
-  is_release: $[eq(variables['System.PullRequest.TargetBranch'], 'release')]
-  target_branch: $[variables['System.PullRequest.TargetBranch']]
+pr: none
 
 stages:
   - stage: 'notebook_tests'
     displayName: 'notebook tests'
 
     jobs:
-      - job: 'make_notebooks'
+      - job: 'imaging_notebook_linux'
         displayName: 'bragg-edge imaging notebook linux'
         timeoutInMinutes: 30
         pool:
@@ -30,16 +20,9 @@ stages:
             displayName: 'add conda to PATH'
           - bash: |
              set -ex
-             echo is master $(is_release)
-             echo target branch $(System.PullRequest.TargetBranch)
              conda config --set always_yes yes --set changeps1 no
-             if [ $(is_release) == False ]; then
-                 conda env create -f ess-notebook-latest.yml
-                 source activate ess-notebook-latest
-             else
-                 conda env create -f ess-notebook.yml
-                 source activate ess-notebook
-             fi
+             conda env create -f ess-notebook-latest.yml
+             source activate ess-notebook-latest
              git clone https://github.com/scipp/ess-notebooks-data.git data
              python make_config.py ${PWD}/data/ess/v20/imaging
              mkdir tests
