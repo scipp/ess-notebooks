@@ -43,12 +43,12 @@ stages:
             displayName: 'setup conda environment'
           - bash: |
              set -ex
-             source activate ${{ variables.conda_env }}
+             source activate $(conda_env)
              git clone https://github.com/scipp/ess-notebooks.git notebooks
             displayName: 'clone notebooks'
           - bash: |
              set -ex
-             source activate ${{ variables.conda_env }}
+             source activate $(conda_env)
              cd notebooks
              git clone https://github.com/scipp/ess-notebooks-data.git data
              python make_config.py ${PWD}/data/ess/v20/imaging
