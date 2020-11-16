@@ -1,16 +1,15 @@
 trigger:
   - master
-  - hone-automated-testing
 
 pr: none
 
 stages:
-  - stage: 'test'
-    displayName: 'python tests'
+  - stage: 'notebook_tests'
+    displayName: 'notebook tests'
 
     jobs:
-      - job: 'make_notebooks'
-        displayName: 'Make Notebooks'
+      - job: 'imaging_notebook_linux'
+        displayName: 'bragg-edge imaging notebook linux'
         timeoutInMinutes: 30
         pool:
           vmImage: 'ubuntu-18.04'
