@@ -21,8 +21,7 @@ stages:
       - job: 'make_notebooks'
         displayName: 'bragg-edge imaging notebook linux'
         timeoutInMinutes: 30
-        pool:
-          vmImage: 'ubuntu-18.04'
+        pool: 'Default'
         steps:
           - bash: echo "##vso[task.prependpath]$CONDA/bin"
             displayName: 'add conda to PATH'
