@@ -13,3 +13,6 @@ dependencies:
   - nbformat
   - yapf
   - git
+  - sphinx>=1.6
+  - sphinx_rtd_theme
+  - nbsphinx
