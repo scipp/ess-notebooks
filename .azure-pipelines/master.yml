@@ -1,0 +1,34 @@
+trigger:
+  - master
+  - hone-automated-testing
+
+pr: none
+
+stages:
+  - stage: 'test'
+    displayName: 'python tests'
+
+    jobs:
+      - job: 'make_notebooks'
+        displayName: 'Make Notebooks'
+        timeoutInMinutes: 30
+        pool:
+          vmImage: 'ubuntu-18.04'
+        steps:
+          - checkout: self
+            submodules: true
+          - bash: echo "##vso[task.prependpath]$CONDA/bin"
+            displayName: 'add conda to PATH'
+          - bash: |
+             set -ex
+             conda config --set always_yes yes --set changeps1 no
+             conda env create -f ess-notebook-latest.yml
+             source activate ess-notebook-latest
+             git clone https://github.com/scipp/ess-notebooks-data.git data
+             python make_config.py ${PWD}/data/ess/v20/imaging
+             mkdir tests
+             cp scippconfig.py tests/
+             find . -not -path "*/\.*" -type f -name "*.ipynb"\
+              | xargs jupyter nbconvert --to python --output-dir tests\
+              --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
+             find tests -not -path "tests/scippconfig.py" -type f -name "*.py" | xargs python
