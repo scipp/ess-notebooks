@@ -24,6 +24,10 @@ copyright = u'scipp ess-notebook contributors'
 version = u''
 release = u''
 
+html_show_sourcelink = True
+nbsphinx_prolog = """`Download this Jupyter notebook <https://raw.githubusercontent.com/scipp/ess-notebooks/master/{{ env.doc2path(env.docname, base=None) }}>`_"""
+
+
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
