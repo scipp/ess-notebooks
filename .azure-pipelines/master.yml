@@ -32,8 +32,13 @@ stages:
               | xargs jupyter nbconvert --to python --output-dir tests\
               --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
              find tests -not -path "tests/scippconfig.py" -type f -name "*.py" | xargs python
-  - stage: 'publish_documentation'
-    displayName: 'publish documentation'
+  - stage: 'make_sphinx_documentation'
+    displayName: 'make sphinx documentation'
 
     jobs:
       - template: documentation_build.yml
+  - stage: "deploy_documentation"
+    displayName: "deploy documentation"
+
+    jobs:
+      - template: documentation_deploy.yml
