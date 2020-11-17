@@ -47,7 +47,7 @@ html_static_path = ['_static']
 # -- Options for Matplotlib in notebooks ----------------------------------
 
 nbsphinx_execute_arguments = [
-    "--InlineBackend.figure_formats={'svg', 'pdf'}",
+    "--InlineBackend.figure_formats={'png}",
     "--InlineBackend.rc={'figure.dpi': 96}",
     "--Session.metadata={'scipp_docs_build': True}",
 ]
