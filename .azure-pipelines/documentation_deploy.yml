@@ -44,6 +44,10 @@ jobs:
           # Stage removal of everything
           git rm -rf .
           git status
+          # Unstage deletion of and recover "release" directory
+          git reset -- release || true
+          git checkout -- release || true
+          git status
         displayName: "Remove old documentation, keeping releases"
       - bash: |
           set -ex
