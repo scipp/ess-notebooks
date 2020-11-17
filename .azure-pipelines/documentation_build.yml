@@ -24,10 +24,6 @@ jobs:
       - bash: |
           set -ex
           source activate ess-notebook-latest
-        displayName: 'Activate Conda environment'
-      - bash: |
-          set -ex
-          source activate ess-notebook-latest
           sphinx-build . "$(docs_build_dir)"
           find "$(docs_build_dir)" -type f -name "*.ipynb" -delete
         displayName: 'Build documentation'
