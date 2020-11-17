@@ -5,7 +5,12 @@ jobs:
       vmImage: 'ubuntu-18.04'
     variables:
       docs_build_dir: '$(Build.StagingDirectory)/docs_build'
+      data_dir: '$(Build.StagingDirectory)/data'
     steps:
+      - bash: |
+          git clone https://github.com/scipp/ess-notebooks-data.git $(data_dir)
+          python make_config.py $(data_dir)/ess/v20/imaging
+        displayName: 'Make config'
       - bash: |
           set -ex
           mkdir -p "$(docs_build_dir)"
