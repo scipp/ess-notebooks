@@ -41,6 +41,7 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints']
 
 # -- Options for HTML output -------------------------------------------------
+# Should only use this theme on READTHEDOCS. TODO.
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 if not on_rtd:  # only import and set the theme if we're building docs locally
@@ -62,11 +63,6 @@ else:
         ]
     }
 
-html_theme_options = {
-    'logo_only': True
-}
-
-html_logo = "_static/logo-large-v4.png"
 
 html_static_path = ['_static']
 
