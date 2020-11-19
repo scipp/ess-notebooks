@@ -1,0 +1,34 @@
+jobs:
+  - job: 'documentation'
+    displayName: 'Documentation'
+    pool:
+      vmImage: 'ubuntu-18.04'
+    variables:
+      docs_build_dir: '$(Build.StagingDirectory)/docs_build'
+      data_dir: '$(Build.StagingDirectory)/data'
+    steps:
+      - bash: |
+          git clone https://github.com/scipp/ess-notebooks-data.git $(data_dir)
+          python make_config.py $(data_dir)/ess/v20/imaging
+        displayName: 'Make config'
+      - bash: |
+          set -ex
+          mkdir -p "$(docs_build_dir)"
+        displayName: 'Make directories'
+      - bash: |
+          echo "##vso[task.prependpath]$CONDA/bin"
+        displayName: Add Conda to PATH
+      - bash: |
+          conda env create -f ess-notebook-latest.yml
+        displayName: 'Create Conda environment'
+      - bash: |
+          set -ex
+          source activate ess-notebook-latest
+          sphinx-build . "$(docs_build_dir)"
+          find "$(docs_build_dir)" -type f -name "*.ipynb" -delete
+        displayName: 'Build documentation'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(docs_build_dir)'
+          ArtifactName: 'documentation'
+        displayName: 'Publish documentation artifacts'
