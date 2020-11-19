@@ -70,6 +70,6 @@ html_static_path = ['_static']
 
 nbsphinx_execute_arguments = [
     "--InlineBackend.figure_formats={'png'}",
-    "--InlineBackend.rc={'figure.dpi': 96}",
+    "--InlineBackend.rc 'figure.dpi'=96",
     "--Session.metadata={'scipp_docs_build': True}",
 ]
