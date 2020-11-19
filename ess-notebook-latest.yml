@@ -6,7 +6,7 @@ channels:
   - mantid/label/nightly
 
 dependencies:
-  - scipp-ess
+  - ess
   - jupyter
   - ipympl
   - mantid-framework

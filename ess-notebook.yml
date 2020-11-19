@@ -6,7 +6,7 @@ channels:
   - mantid
 
 dependencies:
-  - scipp-ess
+  - ess 
   - jupyter
   - ipympl
   - mantid-framework

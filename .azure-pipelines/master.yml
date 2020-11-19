@@ -1,6 +1,5 @@
 trigger:
   - master
-  - documentation-build
 
 pr: none
 
