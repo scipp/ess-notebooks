@@ -18,8 +18,8 @@ stages:
     displayName: 'notebook tests'
 
     jobs:
-      - job: 'make_notebooks'
-        displayName: 'bragg-edge imaging notebook linux'
+      - job: 'test_notebooks'
+        displayName: 'test notebooks linux'
         timeoutInMinutes: 30
         pool:
           vmImage: 'ubuntu-18.04'
