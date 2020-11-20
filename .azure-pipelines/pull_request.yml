@@ -47,4 +47,4 @@ stages:
              find . -not -path "*/\.*" -type f -name "*.ipynb"\
               | xargs jupyter nbconvert --to python --output-dir tests\
               --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
-             find tests -not -path "tests/scippconfig.py" -type f -name "*.py" | xargs python
+             find tests -not -path "tests/dataconfig.py" -type f -name "*.py" | xargs python
