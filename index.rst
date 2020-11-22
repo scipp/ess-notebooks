@@ -15,6 +15,6 @@ Documentation
 
 .. toctree::
    :maxdepth: 1
-   :caption: Loki Tube Calibration 
+   :caption: Loki Straw Tube Q1D 
 
    sans-reduction 
