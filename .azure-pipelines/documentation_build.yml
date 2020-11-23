@@ -9,7 +9,7 @@ jobs:
     steps:
       - bash: |
           git clone https://github.com/scipp/ess-notebooks-data.git $(data_dir)
-          python make_config.py $(data_dir)/ess/v20/imaging
+          python make_config.py $(data_dir)
         displayName: 'Make config'
       - bash: |
           set -ex

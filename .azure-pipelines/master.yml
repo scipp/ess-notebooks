@@ -8,8 +8,8 @@ stages:
     displayName: 'notebook tests'
 
     jobs:
-      - job: 'imaging_notebook_linux'
-        displayName: 'bragg-edge imaging notebook linux'
+      - job: 'test_notebooks'
+        displayName: 'test notebooks linux'
         timeoutInMinutes: 30
         pool:
           vmImage: 'ubuntu-18.04'
@@ -30,7 +30,8 @@ stages:
              find . -not -path "*/\.*" -type f -name "*.ipynb"\
               | xargs jupyter nbconvert --to python --output-dir tests\
               --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
-             find tests -not -path "tests/dataconfig.py" -type f -name "*.py" | xargs python
+             python tests/bragg-edge-imaging-2D.py
+             python tests/sans-reduction.py
   - stage: 'make_sphinx_documentation'
     displayName: 'make sphinx documentation'
 
