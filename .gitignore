@@ -1,6 +1,6 @@
 # Files
 *.txt
-scippconfig.py
+dataconfig.py
 # Folders
 =======
 data/

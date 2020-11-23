@@ -18,8 +18,8 @@ stages:
     displayName: 'notebook tests'
 
     jobs:
-      - job: 'make_notebooks'
-        displayName: 'bragg-edge imaging notebook linux'
+      - job: 'test_notebooks'
+        displayName: 'test notebooks linux'
         timeoutInMinutes: 30
         pool:
           vmImage: 'ubuntu-18.04'
@@ -41,10 +41,12 @@ stages:
                  source activate ess-notebook
              fi
              git clone https://github.com/scipp/ess-notebooks-data.git data
-             python make_config.py ${PWD}/data/ess/v20/imaging
+             python make_config.py ${PWD}/data
              mkdir tests
-             cp scippconfig.py tests/
+             cp dataconfig.py tests/
              find . -not -path "*/\.*" -type f -name "*.ipynb"\
               | xargs jupyter nbconvert --to python --output-dir tests\
               --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
-             find tests -not -path "tests/scippconfig.py" -type f -name "*.py" | xargs python
+             python tests/bragg-edge-imaging-2D.py
+             python tests/sans-reduction.py
+

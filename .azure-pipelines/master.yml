@@ -24,13 +24,13 @@ stages:
              conda env create -f ess-notebook-latest.yml
              source activate ess-notebook-latest
              git clone https://github.com/scipp/ess-notebooks-data.git data
-             python make_config.py ${PWD}/data/ess/v20/imaging
+             python make_config.py ${PWD}/data
              mkdir tests
-             cp scippconfig.py tests/
+             cp dataconfig.py tests/
              find . -not -path "*/\.*" -type f -name "*.ipynb"\
               | xargs jupyter nbconvert --to python --output-dir tests\
               --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
-             find tests -not -path "tests/scippconfig.py" -type f -name "*.py" | xargs python
+             find tests -not -path "tests/dataconfig.py" -type f -name "*.py" | xargs python
   - stage: 'make_sphinx_documentation'
     displayName: 'make sphinx documentation'
 

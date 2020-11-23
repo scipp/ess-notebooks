@@ -7,24 +7,26 @@ if __name__ == '__main__':
     # configure arg parser
     parser = argparse.ArgumentParser(
         description=
-        'Makes local non-versioned scippconfig.py for use by bragg edge imaging notebook. data is expected to be downloaded from git@github.com:scipp/ess-notebooks-data.git i.e git clone git@github.com:scipp/ess-notebooks-data.git Generates valid scippconfig.py with the correct local paths set',
+        'Makes local non-versioned dataconfig.py for working with ess notebook data. Test data directory found https://github.com/scipp/ess-notebooks-data.git assumed to be checked out locally. Generates valid dataconfig.py with the correct local paths set',
         prog='make_config')
     positional_args = parser.add_argument_group('Positional arguments')
     optional_args = parser.add_argument_group('Optional arguments')
     positional_args.add_argument(
         'Root',
         nargs='?',
-        help='The absolute path stress-experiments directory')
+        help=
+        'The absolute path to root directory of the cloned ess-notebooks-data repository'
+    )
     optional_args.add_argument('-f',
                                '--force',
                                action='store_true',
                                default=False,
-                               help='Force overwrite of existing scippconfig')
+                               help='Force overwrite of existing config')
     # run the arg parser
     arguments = parser.parse_args()
     existing_config = False
     try:
-        import scippconfig
+        import dataconfig  # noqa: F401
         existing_config = True
     except ImportError:
         pass
@@ -33,11 +35,15 @@ if __name__ == '__main__':
     if not os.path.exists(arguments.Root):
         raise ValueError('Path {} does not exist on local machine'.format(
             arguments.Root))
+    if not os.path.exists(os.path.join(arguments.Root, 'ess')):
+        raise ValueError(
+            'Bad path. Expected directory to contain ess directory'.format(
+                arguments.Root))
     if existing_config and not arguments.force:
         raise RuntimeError(
-            'scippconfig.py already exists. cannot overwrite without force option. see help.'
+            'config.py already exists. cannot overwrite without force option. see help.'
         )
     # make the config.py
-    with open('scippconfig.py', 'w') as fh:
-        fh.write('script_root="{}"\n'.format(arguments.Root))
-    print('scippconfig.py written')
+    with open('dataconfig.py', 'w') as fh:
+        fh.write('data_root="{}"\n'.format(arguments.Root))
+    print('dataconfig.py written')
