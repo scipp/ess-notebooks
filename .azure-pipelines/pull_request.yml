@@ -23,6 +23,8 @@ stages:
         timeoutInMinutes: 30
         pool:
           vmImage: 'ubuntu-18.04'
+        variables:
+          test_output: 'notebooks.xml'
         steps:
           - checkout: self
             submodules: true
@@ -47,6 +49,22 @@ stages:
              find . -not -path "*/\.*" -type f -name "*.ipynb"\
               | xargs jupyter nbconvert --to python --output-dir tests\
               --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
-             python tests/bragg-edge-imaging-2D.py
-             python tests/sans-reduction.py
-
+             touch $(test_output)
+             echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><testsuites><testsuite name=\"suite\">" >> $(test_output)
+             exclude_list=()
+             for f in tests/*.py; do 
+                 found=0
+                 for g in "${exclude_list[@]}" ; do
+                     [ "$f" = "tests/$g" ] && found=1
+                 done
+                 [ "$found" = 0 ] && python "$f"
+                 echo "<testcase classname=\"class\" name=\"$f\"><failure message=\"$f failed\"/></testcase>" >> $(test_output)
+             done
+             echo "</testsuite></testsuites>" >> $(test_output)
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: "**/$(test_output)"
+              failTaskOnFailedTests: true
+            displayName: 'Publish notebook test results'
+            condition: succeededOrFailed()

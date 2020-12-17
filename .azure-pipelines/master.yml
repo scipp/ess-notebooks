@@ -6,8 +6,6 @@ pr: none
 stages:
   - stage: 'notebook_tests'
     displayName: 'notebook tests'
-    variables:
-      test_output: 'notebooks.xml'
 
     jobs:
       - job: 'test_notebooks'
@@ -15,6 +13,8 @@ stages:
         timeoutInMinutes: 30
         pool:
           vmImage: 'ubuntu-18.04'
+        variables:
+          test_output: 'notebooks.xml'
         steps:
           - checkout: self
             submodules: true
@@ -51,8 +51,6 @@ stages:
               failTaskOnFailedTests: true
             displayName: 'Publish notebook test results'
             condition: succeededOrFailed()
-          - bash: echo "temp other step after publishtestresults"
-            displayName: 'do I see this step?'
   - stage: 'make_sphinx_documentation'
     displayName: 'make sphinx documentation'
 
