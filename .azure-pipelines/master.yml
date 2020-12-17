@@ -40,8 +40,14 @@ stages:
                  for g in "${exclude_list[@]}" ; do
                      [ "$f" = "tests/$g" ] && found=1
                  done
-                 [ "$found" = 0 ] && python "$f"
-                 echo "<testcase classname=\"class\" name=\"$f\"><failure message=\"$f failed\"/></testcase>" >> $(test_output)
+                 if [ "$found" = 0 ]; then
+                     python "$f"
+                     if [ $? != 0 ]; then
+                         echo "<testcase classname=\"class\" name=\"$f\"><failure message=\"$f failed\"/></testcase>" >> $(test_output)
+                     else
+                         echo "<testcase classname=\"class\" name=\"$f\"/>" >> $(test_output)
+                     fi
+                 fi
              done
              echo "</testsuite></testsuites>" >> $(test_output)
           - task: PublishTestResults@2
