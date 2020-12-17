@@ -27,8 +27,8 @@ jobs:
            mkdir tests
            cp dataconfig.py tests/
            find . -not -path "*/\.*" -type f -name "*.ipynb"\
-           | xargs jupyter nbconvert --to python --output-dir tests\
-           --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
+            | xargs jupyter nbconvert --to python --output-dir tests\
+            --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
            touch $(test_output)
            echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><testsuites><testsuite name=\"notebooks\">" >> $(test_output)
            exclude_list=(dataconfig.py)
