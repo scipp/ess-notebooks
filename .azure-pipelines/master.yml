@@ -51,6 +51,8 @@ stages:
               failTaskOnFailedTests: true
             displayName: 'Publish notebook test results'
             condition: succeededOrFailed()
+          - bash: echo "temp other step after publishtestresults"
+            displayName: 'do I see this step?'
   - stage: 'make_sphinx_documentation'
     displayName: 'make sphinx documentation'
 
