@@ -6,6 +6,8 @@ pr: none
 stages:
   - stage: 'notebook_tests'
     displayName: 'notebook tests'
+    variables:
+      test_output: 'notebooks.xml'
 
     jobs:
       - job: 'test_notebooks'
@@ -30,9 +32,8 @@ stages:
              find . -not -path "*/\.*" -type f -name "*.ipynb"\
               | xargs jupyter nbconvert --to python --output-dir tests\
               --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
-             test_output=notebooks.xml
-             touch $test_output
-             echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><testsuites><testsuite name=\"suite\">" >> $test_output
+             touch $(test_output)
+             echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><testsuites><testsuite name=\"suite\">" >> $(test_output)
              exclude_list=()
              for f in tests/*.py; do 
                  found=0
@@ -40,15 +41,16 @@ stages:
                      [ "$f" = "tests/$g" ] && found=1
                  done
                  [ "$found" = 0 ] && python "$f"
-                 echo "<testcase classname=\"class\" name=\"$f\"><failure message=\"$f failed\"/></testcase>" >> $test_output
+                 echo "<testcase classname=\"class\" name=\"$f\"><failure message=\"$f failed\"/></testcase>" >> $(test_output)
              done
-             echo "</testsuite></testsuites>" >> $test_output
+             echo "</testsuite></testsuites>" >> $(test_output)
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'JUnit'
-              testResultsFiles: 'notebooks.xml'
+              testResultsFiles: "**/$(test_output)"
               failTaskOnFailedTests: true
             displayName: 'Publish notebook test results'
+            condition: succeededOrFailed()
   - stage: 'make_sphinx_documentation'
     displayName: 'make sphinx documentation'
 
