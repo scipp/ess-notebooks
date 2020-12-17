@@ -18,35 +18,4 @@ stages:
     displayName: 'notebook tests'
 
     jobs:
-      - job: 'test_notebooks'
-        displayName: 'test notebooks linux'
-        timeoutInMinutes: 30
-        pool:
-          vmImage: 'ubuntu-18.04'
-        steps:
-          - checkout: self
-            submodules: true
-          - bash: echo "##vso[task.prependpath]$CONDA/bin"
-            displayName: 'add conda to PATH'
-          - bash: |
-             set -ex
-             echo is master $(is_release)
-             echo target branch $(System.PullRequest.TargetBranch)
-             conda config --set always_yes yes --set changeps1 no
-             if [ $(is_release) == False ]; then
-                 conda env create -f ess-notebook-latest.yml
-                 source activate ess-notebook-latest
-             else
-                 conda env create -f ess-notebook.yml
-                 source activate ess-notebook
-             fi
-             git clone https://github.com/scipp/ess-notebooks-data.git data
-             python make_config.py ${PWD}/data
-             mkdir tests
-             cp dataconfig.py tests/
-             find . -not -path "*/\.*" -type f -name "*.ipynb"\
-              | xargs jupyter nbconvert --to python --output-dir tests\
-              --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
-             python tests/bragg-edge-imaging-2D.py
-             python tests/sans-reduction.py
-
+      - template: test_notebooks.yml

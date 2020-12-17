@@ -3,41 +3,15 @@ trigger:
 
 pr: none
 
+variables:
+  is_release: false
+
 stages:
   - stage: 'notebook_tests'
     displayName: 'notebook tests'
 
     jobs:
-      - job: 'test_notebooks'
-        displayName: 'test notebooks linux'
-        timeoutInMinutes: 30
-        pool:
-          vmImage: 'ubuntu-18.04'
-        steps:
-          - checkout: self
-            submodules: true
-          - bash: echo "##vso[task.prependpath]$CONDA/bin"
-            displayName: 'add conda to PATH'
-          - bash: |
-             set -ex
-             conda config --set always_yes yes --set changeps1 no
-             conda env create -f ess-notebook-latest.yml
-             source activate ess-notebook-latest
-             git clone https://github.com/scipp/ess-notebooks-data.git data
-             python make_config.py ${PWD}/data
-             mkdir tests
-             cp dataconfig.py tests/
-             find . -not -path "*/\.*" -type f -name "*.ipynb"\
-              | xargs jupyter nbconvert --to python --output-dir tests\
-              --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
-             exclude_list=()
-             for f in tests/*.py; do 
-                 found=0
-                 for g in "${exclude_list[@]}" ; do
-                     [ "$f" = "tests/$g" ] && found=1
-                 done
-                 [ "$found" = 0 ] && python "$f"
-             done
+      - template: test_notebooks.yml
   - stage: 'make_sphinx_documentation'
     displayName: 'make sphinx documentation'
 
