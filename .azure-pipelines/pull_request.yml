@@ -18,12 +18,4 @@ stages:
     displayName: 'notebook tests'
 
     jobs:
-      - job: 'test_notebooks'
-        displayName: 'test notebooks linux'
-        timeoutInMinutes: 30
-        pool:
-          vmImage: 'ubuntu-18.04'
-        variables:
-          test_output: 'notebooks.xml'
-        steps:
-          - template: test_notebooks_and_publish_results.yml
+      - template: test_notebooks.yml

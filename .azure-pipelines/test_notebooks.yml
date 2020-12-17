@@ -1,9 +1,17 @@
-steps:
-  - checkout: self
-    submodules: true
-  - bash: echo "##vso[task.prependpath]$CONDA/bin"
-    displayName: 'add conda to PATH'
-  - bash: |
+jobs:
+  - job: 'test_notebooks'
+  displayName: 'test notebooks linux'
+  timeoutInMinutes: 30
+  pool:
+      vmImage: 'ubuntu-18.04'
+  variables:
+      test_output: 'notebooks.xml'
+  steps:
+      - checkout: self
+      submodules: true
+      - bash: echo "##vso[task.prependpath]$CONDA/bin"
+      displayName: 'add conda to PATH'
+      - bash: |
       set -ex
       conda config --set always_yes yes --set changeps1 no
       echo is master $(is_release)
@@ -39,10 +47,10 @@ steps:
           fi
       done
       echo "</testsuite></testsuites>" >> $(test_output)
-  - task: PublishTestResults@2
+      - task: PublishTestResults@2
       inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: "**/$(test_output)"
-        failTaskOnFailedTests: true
+          testResultsFormat: 'JUnit'
+          testResultsFiles: "**/$(test_output)"
+          failTaskOnFailedTests: true
       displayName: 'Publish notebook test results'
       condition: succeededOrFailed()
