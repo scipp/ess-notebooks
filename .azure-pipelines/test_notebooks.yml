@@ -15,7 +15,7 @@ jobs:
            set -ex
            conda config --set always_yes yes --set changeps1 no
            echo is master $(is_release)
-           if [ $(is_release) == False ]; then
+           if [ $(is_release) == false ]; then
                conda env create -f ess-notebook-latest.yml
                source activate ess-notebook-latest
            else
