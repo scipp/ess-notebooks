@@ -26,7 +26,7 @@ jobs:
             --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
            touch $(test_output)
            echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><testsuites><testsuite name=\"notebooks\">" >> $(test_output)
-           exclude_list=(dataconfig.py livedata_mantid.py)
+           exclude_list=(dataconfig.py livedata_mantid.py whats-new-0.5.0.py)
            for f in tests/*.py; do 
                found=0
                for g in "${exclude_list[@]}" ; do
