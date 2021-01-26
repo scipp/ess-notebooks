@@ -24,6 +24,31 @@ if not os.path.exists(data_dir):
                             f" check your make_config.py:\n{data_dir}")
 
 
+
+def to_bin_centers(x, dim):
+    """
+    Convert array edges to centers
+    """
+    return 0.5 * (x[dim, 1:] + x[dim, :-1])
+
+
+def to_bin_edges(x, dim):
+    """
+    Convert array centers to edges
+    """
+    idim = x.dims.index(dim)
+    if x.shape[idim] < 2:
+        one = 1.0 * x.unit
+        return sc.concatenate(x[dim, 0:1] - one, x[dim, 0:1] + one, dim)
+    else:
+        center = to_bin_centers(x, dim)
+        # Note: use range of 0:1 to keep dimension dim in the slice to avoid
+        # switching round dimension order in concatenate step.
+        left = center[dim, 0:1] - (x[dim, 1] - x[dim, 0])
+        right = center[dim, -1] + (x[dim, -1] - x[dim, -2])
+        return sc.concatenate(sc.concatenate(left, center, dim), right, dim)
+
+
 # Load tiff stack
 def load_and_scale(folder_name, scale_factor):
     to_load = os.path.join(raw_data_dir, folder_name)
@@ -72,9 +97,29 @@ def load():
                               "source-position": geometry.coords["source-position"]})
     geom.coords["position"] = sc.reshape(geometry.coords['position'], dims=['y', 'x'],
                                          shape=tuple(ds["sample"]["t", 0].shape))
-    geom.coords["x"] = sc.geometry.x(geom.coords["position"])["y", 0]
-    geom.coords["y"] = sc.geometry.y(geom.coords["position"])["x", 0]
+    geom.coords["x"] = to_bin_edges(sc.geometry.x(geom.coords["position"])["y", 0], "x")
+    geom.coords["y"] = to_bin_edges(sc.geometry.y(geom.coords["position"])["x", 0], "y")
     ds = sc.merge(ds, geom)
     ds
 
     return ds
+
+
+def create_Braggedge_list(lattice_constant, miller_indices):
+    '''
+    :param miller-indices: like [(1,1,0),(2,0,0),...]
+    :type miller-indices: list of tuples
+    '''
+    coords = [str((h, k, l)) for h, k, l in miller_indices]
+    interplanar_distances = [
+        2. * lattice_constant / np.sqrt(h**2 + k**2 + l**2)
+        for h, k, l in miller_indices
+    ]
+
+    d = sc.DataArray(
+        sc.Variable(dims=["bragg-edge"],
+                    values=np.array(interplanar_distances),
+                    unit=sc.units.angstrom))
+    d.coords["miller-indices"] = sc.Variable(dims=["bragg-edge"],
+                                             values=coords)
+    return d
