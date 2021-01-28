@@ -212,8 +212,8 @@ def groupby2D(data, nbins):
 
 def fit(Bragg_edges_FCC, reference):
 
-    x_min_sides = [0.05, 0.1, 0.1, 0.05],  #[0.1, 0.1, 0.1, 0.05]
-    x_max_sides = [0.1, 0.05, 0.1, 0.1],  #[0.1, 0.1, 0.1, 0.1]
+    x_min_sides = [0.05, 0.1, 0.1, 0.05]  #[0.1, 0.1, 0.1, 0.05]
+    x_max_sides = [0.1, 0.05, 0.1, 0.1]  #[0.1, 0.1, 0.1, 0.1]
     fit_list = []
     spectrum_list_fitted_sample = []
     spectrum_list_fitted_sample_elastic = []
