@@ -6,6 +6,12 @@ European Spallation Source (ESS) electronic notebooks for neutron data reduction
 Documentation
 =============
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Scipp Release Notes
+
+   scipp/whats-new-0.5.0.ipynb
+
 
 .. toctree::
    :maxdepth: 1
