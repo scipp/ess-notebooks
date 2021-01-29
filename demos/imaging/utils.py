@@ -210,7 +210,7 @@ def groupby2D(data, nbins):
     return reshaped
 
 
-def fit(Bragg_edges_FCC, reference):
+def fit(Bragg_edges_FCC, reference, quiet=False):
 
     x_min_sides = [0.05, 0.1, 0.1, 0.05]  #[0.1, 0.1, 0.1, 0.05]
     x_max_sides = [0.1, 0.05, 0.1, 0.1]  #[0.1, 0.1, 0.1, 0.1]
@@ -232,9 +232,10 @@ def fit(Bragg_edges_FCC, reference):
         x_min_fit = xpos_guess - xpos_guess * abs(x_min_sides[edge_index])
         x_max_fit = xpos_guess + xpos_guess * abs(x_max_sides[edge_index])
 
-        print(
-            "Now fitting Bragg edge {} at {:.3f} A (between {:.3f} A and {:.3f} A) across image groups"
-            .format(bragg_edge, xpos_guess, x_min_fit, x_max_fit))
+        if not quiet:
+            print(
+                "Now fitting Bragg edge {} at {:.3f} A (between {:.3f} A and {:.3f} A) across image groups"
+                .format(bragg_edge, xpos_guess, x_min_fit, x_max_fit))
 
         # if the full inital sample was taken and no grouping was done
         #Fitting the masked sample
