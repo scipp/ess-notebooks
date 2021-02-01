@@ -26,14 +26,14 @@ jobs:
             --RegexRemovePreprocessor.patterns="['^# exclude-from-export']"
            touch $(test_output)
            echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><testsuites><testsuite name=\"notebooks\">" >> $(test_output)
-           exclude_list=(dataconfig.py livedata_mantid.py whats-new-0.5.0.py loki.py sans.py q1d_script.py gauss_coil_fit1.py)
+           exclude_list=(dataconfig.py livedata_mantid.py whats-new-0.5.0.py)
            for f in tests/*.py; do 
                found=0
                for g in "${exclude_list[@]}" ; do
                    [ "$f" = "tests/$g" ] && found=1
                done
                if [ "$found" = 0 ]; then
-                   python "$f"
+                   PYTHONPATH=$PWD && python "$f"
                    if [ $? != 0 ]; then
                        echo "<testcase classname=\"class\" name=\"$f\"><failure message=\"$f failed\"/></testcase>" >> $(test_output)
                    else
