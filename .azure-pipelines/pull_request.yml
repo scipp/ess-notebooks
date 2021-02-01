@@ -15,7 +15,7 @@ variables:
 
 stages:
   - stage: 'make_sphinx_documentation'
-      displayName: 'make sphinx documentation'
+    displayName: 'make sphinx documentation'
 
-      jobs:
-        - template: documentation_build.yml
+    jobs:
+      - template: documentation_build.yml
