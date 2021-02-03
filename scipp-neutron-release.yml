@@ -1,8 +1,8 @@
-name: scipp-neutron-dev
+name: scipp-neutron-release
 
 channels:
   - conda-forge
-  - scipp/label/dev
+  - scipp
 
 dependencies:
   # Run
