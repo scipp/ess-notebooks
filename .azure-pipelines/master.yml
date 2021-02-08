@@ -3,6 +3,13 @@ trigger:
 
 pr: none
 
+resources:
+  pipelines:
+  - pipeline: upstream_ess_master 
+    project: ess
+    source: Master 
+    trigger: true
+
 variables:
   is_release: false
 
