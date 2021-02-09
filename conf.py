@@ -16,7 +16,7 @@ import os
 # -- Project information -----------------------------------------------------
 
 project = u'ess-notebooks'
-copyright = u'2020 scipp ess-notebooks contributors'
+copyright = u'2021 scipp ess-notebooks contributors'
 copyright = u'scipp ess-notebook contributors'
 
 # The full version, including alpha/beta/rc tags
