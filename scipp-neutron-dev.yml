@@ -1,0 +1,21 @@
+name: scipp-neutron-dev
+
+channels:
+  - conda-forge
+  - scipp/label/dev
+
+dependencies:
+  # Run
+  - appdirs
+  - ipympl
+  - ipywidgets
+  - mantid-framework
+  - matplotlib=3.2.2 # version 3.3.3 causes issues with nodejs in JupyterLab
+  - numpy >=1.15.3
+  - python
+  - python-configuration
+  - pythreejs
+  - pyyaml
+  - scipp
+  - tbb
+  - traitlets=4.3.3 # see https://github.com/jupyter-widgets/pythreejs/issues/334
