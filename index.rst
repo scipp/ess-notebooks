@@ -7,6 +7,12 @@ Documentation
 =============
 
 .. toctree::
+   :caption: Demos
+   :maxdepth: 2
+
+   demos/scipp-introduction-for-imaging
+
+.. toctree::
    :caption: Imaging
    :maxdepth: 2
 
@@ -19,8 +25,7 @@ Documentation
    livedata/livedata_mantid
 
 .. toctree::
-   :caption: Scipp
+   :caption: Scipp releases
    :maxdepth: 2
 
-   scipp/scipp-introduction-for-imaging
-   scipp/whats-new-0.5.0
+   releases/whats-new-0.5.0
