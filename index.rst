@@ -1,14 +1,31 @@
-ess-notebooks - Example and template notebooks for neutron data reduction 
+ess-notebooks - Example and template notebooks for neutron data reduction
 =========================================================================
 
-European Spallation Source (ESS) electronic notebooks for neutron data reduction. 
+European Spallation Source (ESS) electronic notebooks for neutron data reduction.
 
 Documentation
 =============
 
+.. toctree::
+   :caption: Demos
+   :maxdepth: 2
+
+   demos/scipp-introduction-for-imaging
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Loki Straw Tube Q1D 
+   :caption: Imaging
+   :maxdepth: 2
 
-   sans-reduction 
+   imaging/bragg-edge-imaging-2D
+
+.. toctree::
+   :caption: Live data
+   :maxdepth: 2
+
+   livedata/livedata_mantid
+
+.. toctree::
+   :caption: Scipp releases
+   :maxdepth: 2
+
+   releases/whats-new-0.5.0
