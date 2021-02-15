@@ -17,6 +17,7 @@ jobs:
            echo is master $(is_release)
            conda env create -f ess-notebook-latest.yml
            source activate ess-notebook-latest
+           echo "UpdateInstrumentDefinitions.OnStartup=0" | tee -a ~/.mantid/Mantid.user.properties
            git clone https://github.com/scipp/ess-notebooks-data.git data
            python make_config.py ${PWD}/data
            mkdir tests
