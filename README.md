@@ -3,4 +3,4 @@
 # ess-notebooks
 Jupyter notebooks for European Spallation Source instruments and experiments
 
-Produces these artifact [docs](https://scipp.github.io/ess-notebooks/)
+Produces these artefact [docs](https://scipp.github.io/ess-notebooks/)
