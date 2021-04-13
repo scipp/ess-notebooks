@@ -3,7 +3,7 @@ jobs:
     displayName: 'test notebooks linux'
     timeoutInMinutes: 30
     pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: 'ubuntu-latest'
     variables:
         test_output: 'notebooks.xml'
     steps:
