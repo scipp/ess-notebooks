@@ -2,11 +2,10 @@ name: ess-notebook-latest
 
 channels:
   - conda-forge
-  - scipp/label/dev
-  - mantid/label/nightly
+  - scipp
 
 dependencies:
-  - ess
+  - scipp/label/dev::ess
   - jupyter
   - ipympl
   - mantid-framework
