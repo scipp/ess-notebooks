@@ -23,9 +23,3 @@ Documentation
    :maxdepth: 2
 
    livedata/livedata_mantid
-
-.. toctree::
-   :caption: Scipp releases
-   :maxdepth: 2
-
-   releases/whats-new-0.5.0
