@@ -19,6 +19,12 @@ Documentation
    imaging/bragg-edge-imaging-2D
 
 .. toctree::
+   :caption: Reflectometry
+   :maxdepth: 2
+
+   reflectometry/amor_reflectometry
+
+.. toctree::
    :caption: Live data
    :maxdepth: 2
 
