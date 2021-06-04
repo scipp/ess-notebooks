@@ -1,11 +1,11 @@
-name: ess-notebook-latest
+name: ess-notebooks-stable
 
 channels:
   - conda-forge
   - scipp
 
 dependencies:
-  - scipp/label/dev::ess=v0.0.4
+  - scipp/label/dev::ess=v0.0.4 # Update channel and tag as soon as on main channel
   - jupyter
   - ipympl
   - mantid-framework

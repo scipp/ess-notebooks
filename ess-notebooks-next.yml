@@ -1,4 +1,4 @@
-name: ess-notebook-next
+name: ess-notebooks-next
 
 channels:
   - conda-forge
