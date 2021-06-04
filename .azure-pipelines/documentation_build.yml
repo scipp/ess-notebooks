@@ -19,11 +19,11 @@ jobs:
           echo "##vso[task.prependpath]$CONDA/bin"
         displayName: Add Conda to PATH
       - bash: |
-          conda env create -f ess-notebook-latest.yml
+          conda env create -f ess-notebooks-stable.yml
         displayName: 'Create Conda environment'
       - bash: |
           set -ex
-          source activate ess-notebook-latest
+          source activate ess-notebooks-stable
           export PYTHONPATH=$PYTHONPATH:$PWD
           sphinx-build . "$(docs_build_dir)"
           find "$(docs_build_dir)" -type f -name "*.ipynb" -delete
