@@ -1,13 +1,13 @@
 trigger:
-  - master
+  - main
 
 pr: none
 
 resources:
   pipelines:
-  - pipeline: upstream_ess_master 
+  - pipeline: upstream_ess_master
     project: ess
-    source: Main 
+    source: Main
     trigger: true
 
 variables:
