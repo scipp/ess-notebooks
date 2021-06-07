@@ -20,10 +20,14 @@ jobs:
         displayName: Add Conda to PATH
       - bash: |
           conda env create -f ess-notebooks-stable.yml
+          source activate ess-notebooks-stable
+          python -c "import scipp" # Diagnostic
         displayName: 'Create Conda environment'
       - bash: |
           set -ex
           source activate ess-notebooks-stable
+          conda list # Diagnostic
+          python -c "import scipp" # Diagnostic
           export PYTHONPATH=$PYTHONPATH:$PWD
           sphinx-build . "$(docs_build_dir)"
           find "$(docs_build_dir)" -type f -name "*.ipynb" -delete
