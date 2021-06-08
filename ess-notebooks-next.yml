@@ -1,0 +1,20 @@
+name: ess-notebooks-next
+
+channels:
+  - conda-forge
+  - scipp
+
+dependencies:
+  - scipp/label/next::ess
+  - jupyter
+  - ipympl
+  - mantid-framework
+  - nbformat
+  - yapf
+  - git
+  - scipp/label/dev::scippwidgets
+  - sphinx>=1.6
+  - sphinx_rtd_theme
+  - nbsphinx
+  - python
+  - psutil
