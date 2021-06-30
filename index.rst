@@ -24,9 +24,3 @@ Documentation
 
    reflectometry/amor_reduction
    reflectometry/amor_reduction_detailed
-
-.. toctree::
-   :caption: Live data
-   :maxdepth: 2
-
-   livedata/livedata_mantid
