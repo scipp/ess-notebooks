@@ -1,11 +1,11 @@
 trigger:
-  - master
+  - main
 
 pr: none
 
 resources:
   pipelines:
-  - pipeline: upstream_ess_master 
+  - pipeline: upstream_ess_main 
     project: ess
     source: Main 
     trigger: true
