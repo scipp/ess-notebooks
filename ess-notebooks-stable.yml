@@ -18,3 +18,4 @@ dependencies:
   - nbsphinx
   - python
   - psutil
+  - pythreejs
