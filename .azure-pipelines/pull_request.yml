@@ -16,6 +16,10 @@ variables:
 stages:
   - stage: 'notebook_tests'
     displayName: 'notebook tests'
-
     jobs:
       - template: test_notebooks.yml
+
+  - stage: 'make_sphinx_documentation'
+    displayName: 'make sphinx documentation'
+    jobs:
+      - template: documentation_build.yml
