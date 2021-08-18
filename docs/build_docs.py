@@ -28,6 +28,26 @@ def make_dir(path):
         os.makedirs(path)
 
 
+# def download_multiple(remote_url, target_dir, extensions):
+#     """
+#     Generate file list by parsing the html source of the web server and search
+#     for links that include the relevant file extensions.
+#     Then download all the files in the list.
+#     """
+#     make_dir(target_dir)
+#     page_source = requests.get(remote_url).text
+#     data_files = []
+#     for ext in extensions:
+#         for f in re.findall(r'href=.*{}">'.format(ext), page_source):
+#             data_files.append(f.lstrip('href="').rstrip('">'))
+#     for f in data_files:
+#         target = os.path.join(target_dir, f)
+#         # Note that only checking if file exists won't download new versions of
+#         # files that are already on disk
+#         if not os.path.isfile(target):
+#             download_file(os.path.join(remote_url, f), target)
+
+
 def download_multiple(remote_url, target_dir, extensions):
     """
     Generate file list by parsing the html source of the web server and search
@@ -37,6 +57,11 @@ def download_multiple(remote_url, target_dir, extensions):
     make_dir(target_dir)
     page_source = requests.get(remote_url).text
     data_files = []
+    for f in re.findall(r'\[DIR\].*/"', page_source):
+        dir_name = f.lstrip('[DIR]"></td><td><a href').lstrip('="').rstrip(
+            '/"')
+        download_multiple(os.path.join(remote_url, dir_name),
+                          os.path.join(target_dir, dir_name), extensions)
     for ext in extensions:
         for f in re.findall(r'href=.*{}">'.format(ext), page_source):
             data_files.append(f.lstrip('href="').rstrip('">'))
