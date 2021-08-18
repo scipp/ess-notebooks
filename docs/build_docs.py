@@ -72,7 +72,7 @@ if __name__ == '__main__':
     download_multiple(remote_url, data_dir, extensions)
 
     # Run the make_config to configure data directories
-    sys.path.append(os.join(docs_dir, '..', 'tools'))
+    sys.path.append(os.path.join(docs_dir, '..', 'tools'))
     from make_config import make_config
     make_config(root=data_dir)
 
