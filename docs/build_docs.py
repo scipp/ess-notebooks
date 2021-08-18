@@ -58,13 +58,12 @@ def download_multiple(remote_url, target_dir, extensions):
     page_source = requests.get(remote_url).text
     data_files = []
     for f in re.findall(r'\[DIR\].*/"', page_source):
-        dir_name = f.lstrip('[DIR]"></td><td><a href').lstrip('="').rstrip(
-            '/"')
+        dir_name = f[len('[DIR]"></td><td><a href="'):-len('/"')]
         download_multiple(os.path.join(remote_url, dir_name),
                           os.path.join(target_dir, dir_name), extensions)
     for ext in extensions:
         for f in re.findall(r'href=.*{}">'.format(ext), page_source):
-            data_files.append(f.lstrip('href="').rstrip('">'))
+            data_files.append(f[len('href="'):-len('">')])
     for f in data_files:
         target = os.path.join(target_dir, f)
         # Note that only checking if file exists won't download new versions of
