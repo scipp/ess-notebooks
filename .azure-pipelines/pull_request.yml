@@ -31,3 +31,4 @@ extends:
       linux:
         py_versions: ['3.7']
         conda_env: 'ess-notebooks.yml'
+    build_package: false
