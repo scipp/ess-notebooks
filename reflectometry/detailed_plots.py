@@ -1,6 +1,5 @@
 if __name__ == '__main__':
-    from collections import OrderedDict
-    from matplotlib import rcParams, cycler
+    from matplotlib import rcParams
 
     FONTSIZE = 20
     NEARLY_BLACK = "#161616"
@@ -26,8 +25,8 @@ if __name__ == '__main__':
         "mathtext.fontset": "custom",
         "font.size": FONTSIZE,
         "font.family": "sans-serif",
-        "font.serif" : "Helvetica",
-        #"text.usetex": True,
+        "font.serif": "Helvetica",
+        # "text.usetex": True,
         "savefig.bbox": "tight",
         "axes.facecolor": LIGHT_GREY,
         "axes.labelpad": 10.0,
@@ -49,9 +48,9 @@ if __name__ == '__main__':
 
     import numpy as np
     import matplotlib.pyplot as plt
-    from scipy.constants import g, h, neutron_mass
+    from scipy.constants import g
     from scipy.special import erf
-    #import _fig_params
+    # import _fig_params
 
     a = -g
     v = 20
@@ -61,16 +60,18 @@ if __name__ == '__main__':
     t = z1 / v
 
     def trace(z, z0):
-        return y0 + (
-            (z-z0) * ((-a * (z1 - z0) ** 2) / (2 * v ** 2) - y0 + y1)
-        ) * 1 / (z1 - z0) + (a * (z - z0) ** 2) / (2 * v ** 2)
+        return y0 + ((z - z0) * (
+            (-a * (z1 - z0)**2) /
+            (2 * v**2) - y0 + y1)) * 1 / (z1 - z0) + (a *
+                                                      (z - z0)**2) / (2 * v**2)
 
     def dtrace(z, z0):
-        return ((-a * (z1 - z0) ** 2) / (2 * v ** 2) - y0 + y1) * 1 / (z1 - z0) + a * (z - z0) / (v ** 2)
+        return ((-a * (z1 - z0)**2) /
+                (2 * v**2) - y0 + y1) * 1 / (z1 - z0) + a * (z - z0) / (v**2)
 
-    z = np.linspace(0.00001, z1-0.01, 1000)
-    z_diff = np.linspace(0.4, z1-0.01, 1000)
-    y = np.linspace(0.00001, y1-0.001, 1000)
+    z = np.linspace(0.00001, z1 - 0.01, 1000)
+    z_diff = np.linspace(0.4, z1 - 0.01, 1000)
+    y = np.linspace(0.00001, y1 - 0.001, 1000)
 
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.plot(z, trace(z, 0))
@@ -78,13 +79,24 @@ if __name__ == '__main__':
     ax.plot(z, np.linspace(0.00001, trace(z, 0)[-1], 1000), ls='--')
     ax.set_xlim(-1, 4.8)
     ax.set_ylim(-0.3, 1.5)
-    rectangle = plt.Rectangle((-0.75,-0.25), 1.5, 0.25, ec='k', fc=(1, 0, 0, 0))
+    rectangle = plt.Rectangle((-0.75, -0.25),
+                              1.5,
+                              0.25,
+                              ec='k',
+                              fc=(1, 0, 0, 0))
     ax.add_patch(rectangle)
-    rectangle = plt.Rectangle((z1,0.3), 0.4, 1, ec='k', fc=(1, 0, 0, 0))
-    ax.text(0, -0.125, 'Sample', horizontalalignment='center',
+    rectangle = plt.Rectangle((z1, 0.3), 0.4, 1, ec='k', fc=(1, 0, 0, 0))
+    ax.text(0,
+            -0.125,
+            'Sample',
+            horizontalalignment='center',
             verticalalignment='center')
-    ax.text(z1+0.2, 0.8, 'Detector', horizontalalignment='center',
-            verticalalignment='center', rotation='vertical')
+    ax.text(z1 + 0.2,
+            0.8,
+            'Detector',
+            horizontalalignment='center',
+            verticalalignment='center',
+            rotation='vertical')
     ax.add_patch(rectangle)
     ax.set_xlabel('$z$/m')
     ax.set_ylabel('$y$/m')

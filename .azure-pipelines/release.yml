@@ -13,7 +13,9 @@ resources:
     ref: main
 
 trigger:
-  - main
+  tags:
+    include:
+      - '*.*.*'
 
 pr: none
 
@@ -26,4 +28,5 @@ extends:
         py_versions: ['3.7']
         conda_env: 'ess-notebooks.yml'
     deploy: true
-    conda_label: 'dev'
+    conda_label: 'main'
+    release: true

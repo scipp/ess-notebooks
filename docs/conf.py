@@ -24,17 +24,18 @@ version = u''
 release = u''
 
 html_show_sourcelink = True
-nbsphinx_prolog = """`Download this Jupyter notebook <https://raw.githubusercontent.com/scipp/ess-notebooks/master/{{ env.doc2path(env.docname, base=None) }}>`_"""
-
+nbsphinx_prolog = """`Download this Jupyter notebook <https://raw.githubusercontent.com/scipp/ess-notebooks/master/{{ env.doc2path(env.docname, base=None) }}>`_"""  # noqa: E501
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'sphinx.ext.intersphinx',
-              'sphinx.ext.mathjax', 'IPython.sphinxext.ipython_directive',
-              'IPython.sphinxext.ipython_console_highlighting', 'nbsphinx']
+extensions = [
+    'sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'sphinx.ext.intersphinx',
+    'sphinx.ext.mathjax', 'IPython.sphinxext.ipython_directive',
+    'IPython.sphinxext.ipython_console_highlighting', 'nbsphinx'
+]
 
 templates_path = ['_templates']
 
@@ -49,11 +50,7 @@ if not on_rtd:  # only import and set the theme if we're building docs locally
     html_theme = 'sphinx_rtd_theme'
     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
-    html_context = {
-        'css_files': [
-            '_static/theme_overrides.css'
-        ]
-    }
+    html_context = {'css_files': ['_static/theme_overrides.css']}
 else:
     html_context = {
         'css_files': [
@@ -62,7 +59,6 @@ else:
             '_static/theme_overrides.css'
         ]
     }
-
 
 html_static_path = ['_static']
 
