@@ -16,60 +16,66 @@ import os
 # -- Project information -----------------------------------------------------
 
 project = u'ess-notebooks'
-copyright = u'2021 scipp ess-notebooks contributors'
-copyright = u'scipp ess-notebook contributors'
+copyright = u'2021 Scipp contributors'
+copyright = u'Scipp contributors'
 
 # The full version, including alpha/beta/rc tags
 version = u''
 release = u''
 
 html_show_sourcelink = True
-nbsphinx_prolog = """`Download this Jupyter notebook <https://raw.githubusercontent.com/scipp/ess-notebooks/master/{{ env.doc2path(env.docname, base=None) }}>`_"""
-
+nbsphinx_prolog = """`Download this Jupyter notebook <https://raw.githubusercontent.com/scipp/ess-notebooks/main/{{ env.doc2path(env.docname, base=None) }}>`_"""
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'sphinx.ext.intersphinx',
-              'sphinx.ext.mathjax', 'IPython.sphinxext.ipython_directive',
-              'IPython.sphinxext.ipython_console_highlighting', 'nbsphinx']
+extensions = [
+    'sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'sphinx.ext.intersphinx',
+    'sphinx.ext.mathjax', 'IPython.sphinxext.ipython_directive',
+    'IPython.sphinxext.ipython_console_highlighting', 'nbsphinx'
+]
 
 templates_path = ['_templates']
 
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints']
 
-# -- Options for HTML output -------------------------------------------------
-# Should only use this theme on READTHEDOCS. TODO.
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+# # -- Options for HTML output -------------------------------------------------
+# # Should only use this theme on READTHEDOCS. TODO.
+# on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
-if not on_rtd:  # only import and set the theme if we're building docs locally
-    import sphinx_rtd_theme
-    html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+# if not on_rtd:  # only import and set the theme if we're building docs locally
+#     import sphinx_rtd_theme
+#     html_theme = 'sphinx_rtd_theme'
+#     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
-    html_context = {
-        'css_files': [
-            '_static/theme_overrides.css'
-        ]
-    }
-else:
-    html_context = {
-        'css_files': [
-            '//media.readthedocs.org/css/sphinx_rtd_theme.css',
-            '//media.readthedocs.org/css/readthedocs-doc-embed.css',
-            '_static/theme_overrides.css'
-        ]
-    }
+#     html_context = {'css_files': ['_static/theme_overrides.css']}
+# else:
+#     html_context = {
+#         'css_files': [
+#             '//media.readthedocs.org/css/sphinx_rtd_theme.css',
+#             '//media.readthedocs.org/css/readthedocs-doc-embed.css',
+#             '_static/theme_overrides.css'
+#         ]
+#     }
 
+import sphinx_rtd_theme
+
+html_theme = 'sphinx_rtd_theme'
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+
+html_context = {'css_files': ['_static/theme_overrides.css']}
+
+html_theme_options = {'logo_only': True}
+
+html_logo = "_static/logo.png"
+html_favicon = "_static/favicon.ico"
 
 html_static_path = ['_static']
 
 # -- Options for Matplotlib in notebooks ----------------------------------
 
 nbsphinx_execute_arguments = [
-    "--InlineBackend.figure_formats={'png'}",
-    "--InlineBackend.rc 'figure.dpi'=96",
-    "--Session.metadata={'scipp_docs_build': True}",
+    "--Session.metadata=scipp_docs_build=True",
 ]
