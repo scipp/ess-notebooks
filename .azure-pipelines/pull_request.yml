@@ -14,10 +14,10 @@ variables:
   target_branch: $[variables['System.PullRequest.TargetBranch']]
 
 stages:
-  - stage: 'notebook_tests'
-    displayName: 'notebook tests'
-    jobs:
-      - template: test_notebooks.yml
+  # - stage: 'notebook_tests'
+  #   displayName: 'notebook tests'
+  #   jobs:
+  #     - template: test_notebooks.yml
 
   - stage: 'make_sphinx_documentation'
     displayName: 'make sphinx documentation'
