@@ -75,7 +75,7 @@ if __name__ == '__main__':
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.plot(x, trace(x, 0), c='#0173B2')
     ax.plot(x, x * dtrace(0, 0), c='#DE8F05')
-    ax.plot(x, np.linspace(0.00001, trace(z, 0)[-1], 1000), ls='--', c='#029E73')
+    ax.plot(x, np.linspace(0.00001, trace(x, 0)[-1], 1000), ls='--', c='#029E73')
     ax.set_xlim(-1, 4.8)
     ax.set_ylim(-0.3, 1.5)
     rectangle = plt.Rectangle((-0.75,-0.25), 1.5, 0.25, ec='k', fc=(1, 0, 0, 0))
