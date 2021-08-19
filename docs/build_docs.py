@@ -4,7 +4,8 @@
 
 import os
 import argparse
-import urllib
+# import urllib
+import requests
 # import requests
 # import re
 from pathlib import Path
@@ -21,7 +22,14 @@ parser.add_argument('--builder', default='html')
 
 def download_file(source, target):
     os.write(1, "Downloading: {}\n".format(source).encode())
-    urllib.request.urlretrieve(source, target)
+    # urllib.request.urlretrieve(source, target)
+
+    r = requests.get(source, stream=True)
+
+    with open(target, "wb") as f:
+        for chunk in r.iter_content(chunk_size=1_048_576):
+            if chunk:
+                f.write(chunk)
 
 
 def make_dir(path):
