@@ -5,8 +5,8 @@
 import os
 import argparse
 import urllib
-import requests
-import re
+# import requests
+# import re
 from pathlib import Path
 import subprocess
 import sys
