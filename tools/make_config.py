@@ -16,10 +16,10 @@ def make_config(root, force=False):
     if not os.path.exists(root):
         raise ValueError(
             'Path {} does not exist on local machine'.format(root))
-    if not os.path.exists(os.path.join(root, 'ess')):
-        raise ValueError(
-            'Bad path {}. Expected directory to contain ess directory'.format(
-                root))
+    # if not os.path.exists(os.path.join(root, 'ess')):
+    #     raise ValueError(
+    #         'Bad path {}. Expected directory to contain ess directory'.format(
+    #             root))
     if existing_config and not force:
         raise RuntimeError(
             'config.py already exists. cannot overwrite without force option. see help.'
