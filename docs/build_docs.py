@@ -68,6 +68,9 @@ if __name__ == '__main__':
     else:
         os.environ['PYTHONPATH'] = str(docs_dir)
     print(os.listdir(data_dir))
+    os.write(
+        1,
+        "Directory listing: {}\n".format(str(os.listdir(data_dir))).encode())
 
     # Create Mantid properties file so that it can find the data files.
     # Also turn off the logging so that it doesn't appear in the docs.
