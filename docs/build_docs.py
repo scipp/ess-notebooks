@@ -41,7 +41,7 @@ def _get_abs_path(path, root):
         return os.path.join(root, path)
 
 
-def _setup():
+def _setup(docs_dir, data_dir):
     # Download and extract tarball containing data files
     tar_name = "ess-notebooks.tar.gz"
     remote_url = "https://public.esss.dk/groups/scipp"
