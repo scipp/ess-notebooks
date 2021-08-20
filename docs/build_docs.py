@@ -64,9 +64,9 @@ if __name__ == '__main__':
     from make_config import make_config
     make_config(root=data_dir)
     if 'PYTHONPATH' in os.environ:
-        os.environ['PYTHONPATH'] += ':' + docs_dir
+        os.environ['PYTHONPATH'] += ':' + str(docs_dir)
     else:
-        os.environ['PYTHONPATH'] = docs_dir
+        os.environ['PYTHONPATH'] = str(docs_dir)
     print(os.listdir(data_dir))
 
     # Create Mantid properties file so that it can find the data files.
