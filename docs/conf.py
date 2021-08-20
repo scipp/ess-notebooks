@@ -12,19 +12,22 @@
 #
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-import os
+import doctest
 # -- Project information -----------------------------------------------------
 
 project = u'ess-notebooks'
-copyright = u'2021 scipp ess-notebooks contributors'
-copyright = u'scipp ess-notebook contributors'
+copyright = u'2021 Scipp contributors'
+copyright = u'Scipp contributors'
 
 # The full version, including alpha/beta/rc tags
 version = u''
 release = u''
 
 html_show_sourcelink = True
-nbsphinx_prolog = """`Download this Jupyter notebook <https://raw.githubusercontent.com/scipp/ess-notebooks/master/{{ env.doc2path(env.docname, base=None) }}>`_"""  # noqa: E501
+nbsphinx_prolog = (
+    "`Download this Jupyter notebook "
+    "<https://raw.githubusercontent.com/scipp/ess-notebooks/main/docs/"
+    "{{ env.doc2path(env.docname, base=None) }}>`_")
 
 # -- General configuration ---------------------------------------------------
 
@@ -42,30 +45,42 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints']
 
 # -- Options for HTML output -------------------------------------------------
-# Should only use this theme on READTHEDOCS. TODO.
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+import sphinx_rtd_theme
 
-if not on_rtd:  # only import and set the theme if we're building docs locally
-    import sphinx_rtd_theme
-    html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+html_theme = 'sphinx_rtd_theme'
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
-    html_context = {'css_files': ['_static/theme_overrides.css']}
-else:
-    html_context = {
-        'css_files': [
-            '//media.readthedocs.org/css/sphinx_rtd_theme.css',
-            '//media.readthedocs.org/css/readthedocs-doc-embed.css',
-            '_static/theme_overrides.css'
-        ]
-    }
+html_context = {'css_files': ['_static/theme_overrides.css']}
+
+html_theme_options = {'logo_only': True}
+
+html_logo = "_static/logo.png"
+html_favicon = "_static/favicon.ico"
 
 html_static_path = ['_static']
 
 # -- Options for Matplotlib in notebooks ----------------------------------
 
 nbsphinx_execute_arguments = [
-    "--InlineBackend.figure_formats={'png'}",
-    "--InlineBackend.rc 'figure.dpi'=96",
-    "--Session.metadata={'scipp_docs_build': True}",
+    "--Session.metadata=scipp_docs_build=True",
+]
+
+# -- Options for doctest --------------------------------------------------
+
+doctest_global_setup = '''
+import numpy as np
+import scipp as sc
+'''
+
+# Using normalize whitespace because many __str__ functions in scipp produce
+# extraneous empty lines and it would look strange to include them in the docs.
+doctest_default_flags = doctest.ELLIPSIS | doctest.IGNORE_EXCEPTION_DETAIL | \
+                        doctest.DONT_ACCEPT_TRUE_FOR_1 | \
+                        doctest.NORMALIZE_WHITESPACE
+
+# -- Options for linkcheck ------------------------------------------------
+
+linkcheck_ignore = [
+    # Specific lines in Github blobs cannot be found by linkcheck.
+    r'https?://github\.com/.*?/blob/[a-f0-9]+/.+?#'
 ]
