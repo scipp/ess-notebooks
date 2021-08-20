@@ -4,10 +4,7 @@
 
 import os
 import argparse
-# import urllib
 import requests
-# import requests
-# import re
 from pathlib import Path
 import subprocess
 import sys
@@ -22,7 +19,6 @@ parser.add_argument('--builder', default='html')
 
 def download_file(source, target):
     os.write(1, "Downloading: {}\n".format(source).encode())
-    # urllib.request.urlretrieve(source, target)
 
     r = requests.get(source, stream=True)
 
@@ -35,49 +31,6 @@ def download_file(source, target):
 def make_dir(path):
     if not os.path.exists(path):
         os.makedirs(path)
-
-
-# def download_multiple(remote_url, target_dir, extensions):
-#     """
-#     Generate file list by parsing the html source of the web server and search
-#     for links that include the relevant file extensions.
-#     Then download all the files in the list.
-#     """
-#     make_dir(target_dir)
-#     page_source = requests.get(remote_url).text
-#     data_files = []
-#     for ext in extensions:
-#         for f in re.findall(r'href=.*{}">'.format(ext), page_source):
-#             data_files.append(f.lstrip('href="').rstrip('">'))
-#     for f in data_files:
-#         target = os.path.join(target_dir, f)
-#         # Note that only checking if file exists won't download new versions of
-#         # files that are already on disk
-#         if not os.path.isfile(target):
-#             download_file(os.path.join(remote_url, f), target)
-
-# def download_multiple(remote_url, target_dir, extensions):
-#     """
-#     Generate file list by parsing the html source of the web server and search
-#     for links that include the relevant file extensions.
-#     Then download all the files in the list.
-#     """
-#     make_dir(target_dir)
-#     page_source = requests.get(remote_url).text
-#     data_files = []
-#     for f in re.findall(r'\[DIR\].*/"', page_source):
-#         dir_name = f[len('[DIR]"></td><td><a href="'):-len('/"')]
-#         download_multiple(os.path.join(remote_url, dir_name),
-#                           os.path.join(target_dir, dir_name), extensions)
-#     for ext in extensions:
-#         for f in re.findall(r'href=.*{}">'.format(ext), page_source):
-#             data_files.append(f[len('href="'):-len('">')])
-#     for f in data_files:
-#         target = os.path.join(target_dir, f)
-#         # Note that only checking if file exists won't download new versions of
-#         # files that are already on disk
-#         if not os.path.isfile(target):
-#             download_file(os.path.join(remote_url, f), target)
 
 
 def get_abs_path(path, root):
@@ -99,9 +52,6 @@ if __name__ == '__main__':
     # Download and extract tarball containing data files
     tar_name = "ess-notebooks.tar.gz"
     remote_url = "https://public.esss.dk/groups/scipp"
-    # extensions = [
-    #     ".nxs", ".h5", ".hdf5", ".raw", ".dat", ".xml", ".txt", ".tiff"
-    # ]
     target = os.path.join(data_dir, tar_name)
     make_dir(data_dir)
     download_file(os.path.join(remote_url, tar_name), target)
@@ -113,6 +63,17 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(docs_dir, '..', 'tools'))
     from make_config import make_config
     make_config(root=data_dir)
+
+    # Create Mantid properties file so that it can find the data files.
+    # Also turn off the logging so that it doesn't appear in the docs.
+    home = str(Path.home())
+    config_dir = os.path.join(home, ".mantid")
+    make_dir(config_dir)
+    properties_file = os.path.join(config_dir, "Mantid.user.properties")
+    with open(properties_file, "a") as f:
+        f.write("\nusagereports.enabled=0\ndatasearch.directories={}\n".format(
+            data_dir))
+        f.write("\nlogging.loggers.root.level=error\n")
 
     # Build the docs with sphinx-build
     status = subprocess.check_call(
