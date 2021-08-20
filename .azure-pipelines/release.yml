@@ -23,6 +23,8 @@ extends:
   template: stages.yml@SharedPipelines
   parameters:
     verbose: ${{ parameters.verbose }}
+    conda_channels: '--channel scipp'
+    gh_pages_subdirectory: 'ess-notebooks'
     config:
       linux:
         py_versions: ['3.7']
