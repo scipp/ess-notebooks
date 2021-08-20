@@ -63,7 +63,11 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(docs_dir, '..', 'tools'))
     from make_config import make_config
     make_config(root=data_dir)
-    os.environ['PYTHONPATH'] += ':' + docs_dir
+    if 'PYTHONPATH' in os.environ:
+        os.environ['PYTHONPATH'] += ':' + docs_dir
+    else:
+        os.environ['PYTHONPATH'] = docs_dir
+    print(os.listdir(data_dir))
 
     # Create Mantid properties file so that it can find the data files.
     # Also turn off the logging so that it doesn't appear in the docs.
