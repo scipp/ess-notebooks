@@ -56,10 +56,10 @@ def _setup(docs_dir, data_dir):
     sys.path.append(os.path.join(docs_dir, '..', 'tools'))
     from make_config import make_config
     make_config(root=data_dir)
-    if 'PYTHONPATH' in os.environ:
-        os.environ['PYTHONPATH'] += ':' + str(docs_dir)
-    else:
-        os.environ['PYTHONPATH'] = str(docs_dir)
+    # if 'PYTHONPATH' in os.environ:
+    #     os.environ['PYTHONPATH'] += ':' + str(docs_dir)
+    # else:
+    #     os.environ['PYTHONPATH'] = str(docs_dir)
 
     # Create Mantid properties file so that it can find the data files.
     # Also turn off the logging so that it doesn't appear in the docs.
@@ -118,6 +118,11 @@ if __name__ == '__main__':
     #     f.write("\nusagereports.enabled=0\ndatasearch.directories={}\n".format(
     #         data_dir))
     #     f.write("\nlogging.loggers.root.level=error\n")
+
+    if 'PYTHONPATH' in os.environ:
+        os.environ['PYTHONPATH'] += ':' + str(docs_dir)
+    else:
+        os.environ['PYTHONPATH'] = str(docs_dir)
 
     # Build the docs with sphinx-build
     status = subprocess.check_call(
