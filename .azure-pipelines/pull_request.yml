@@ -10,7 +10,7 @@ resources:
     name: scipp/pipelines
     type: github
     endpoint: scipp
-    ref: notebooks_pipeline
+    ref: main
 
 trigger:
   branches:
