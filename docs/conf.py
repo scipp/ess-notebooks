@@ -12,7 +12,8 @@
 #
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-import os
+import doctest
+import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = u'ess-notebooks'
@@ -24,7 +25,10 @@ version = u''
 release = u''
 
 html_show_sourcelink = True
-nbsphinx_prolog = """`Download this Jupyter notebook <https://raw.githubusercontent.com/scipp/ess-notebooks/main/{{ env.doc2path(env.docname, base=None) }}>`_"""
+nbsphinx_prolog = (
+    "`Download this Jupyter notebook "
+    "<https://raw.githubusercontent.com/scipp/ess-notebooks/main/docs/"
+    "{{ env.doc2path(env.docname, base=None) }}>`_")
 
 # -- General configuration ---------------------------------------------------
 
@@ -33,7 +37,8 @@ nbsphinx_prolog = """`Download this Jupyter notebook <https://raw.githubusercont
 # ones.
 extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'sphinx.ext.intersphinx',
-    'sphinx.ext.mathjax', 'IPython.sphinxext.ipython_directive',
+    'sphinx.ext.mathjax', 'sphinx.ext.doctest',
+    'IPython.sphinxext.ipython_directive',
     'IPython.sphinxext.ipython_console_highlighting', 'nbsphinx'
 ]
 
@@ -42,7 +47,6 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints']
 
 # -- Options for HTML output -------------------------------------------------
-import sphinx_rtd_theme
 
 html_theme = 'sphinx_rtd_theme'
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
@@ -60,4 +64,24 @@ html_static_path = ['_static']
 
 nbsphinx_execute_arguments = [
     "--Session.metadata=scipp_docs_build=True",
+]
+
+# -- Options for doctest --------------------------------------------------
+
+doctest_global_setup = '''
+import numpy as np
+import scipp as sc
+'''
+
+# Using normalize whitespace because many __str__ functions in scipp produce
+# extraneous empty lines and it would look strange to include them in the docs.
+doctest_default_flags = doctest.ELLIPSIS | doctest.IGNORE_EXCEPTION_DETAIL | \
+                        doctest.DONT_ACCEPT_TRUE_FOR_1 | \
+                        doctest.NORMALIZE_WHITESPACE
+
+# -- Options for linkcheck ------------------------------------------------
+
+linkcheck_ignore = [
+    # Specific lines in Github blobs cannot be found by linkcheck.
+    r'https?://github\.com/.*?/blob/[a-f0-9]+/.+?#'
 ]
