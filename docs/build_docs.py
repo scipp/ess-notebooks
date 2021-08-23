@@ -56,10 +56,6 @@ def _setup(docs_dir, data_dir):
     sys.path.append(os.path.join(docs_dir, '..', 'tools'))
     from make_config import make_config
     make_config(root=data_dir)
-    # if 'PYTHONPATH' in os.environ:
-    #     os.environ['PYTHONPATH'] += ':' + str(docs_dir)
-    # else:
-    #     os.environ['PYTHONPATH'] = str(docs_dir)
 
     # Create Mantid properties file so that it can find the data files.
     # Also turn off the logging so that it doesn't appear in the docs.
@@ -84,40 +80,6 @@ if __name__ == '__main__':
 
     if not args.no_setup:
         _setup(docs_dir=docs_dir, data_dir=data_dir)
-
-    # # Download and extract tarball containing data files
-    # tar_name = "ess-notebooks.tar.gz"
-    # remote_url = "https://public.esss.dk/groups/scipp"
-    # target = os.path.join(data_dir, tar_name)
-    # make_dir(data_dir)
-    # download_file(os.path.join(remote_url, tar_name), target)
-    # tar = tarfile.open(target, "r:gz")
-    # tar.extractall(path=data_dir)
-    # tar.close()
-
-    # # Run the make_config to configure data directories
-    # sys.path.append(os.path.join(docs_dir, '..', 'tools'))
-    # from make_config import make_config
-    # make_config(root=data_dir)
-    # if 'PYTHONPATH' in os.environ:
-    #     os.environ['PYTHONPATH'] += ':' + str(docs_dir)
-    # else:
-    #     os.environ['PYTHONPATH'] = str(docs_dir)
-    # print(os.listdir(data_dir))
-    # os.write(
-    #     1,
-    #     "Directory listing: {}\n".format(str(os.listdir(data_dir))).encode())
-
-    # # Create Mantid properties file so that it can find the data files.
-    # # Also turn off the logging so that it doesn't appear in the docs.
-    # home = str(Path.home())
-    # config_dir = os.path.join(home, ".mantid")
-    # make_dir(config_dir)
-    # properties_file = os.path.join(config_dir, "Mantid.user.properties")
-    # with open(properties_file, "a") as f:
-    #     f.write("\nusagereports.enabled=0\ndatasearch.directories={}\n".format(
-    #         data_dir))
-    #     f.write("\nlogging.loggers.root.level=error\n")
 
     if 'PYTHONPATH' in os.environ:
         os.environ['PYTHONPATH'] += ':' + str(docs_dir)
