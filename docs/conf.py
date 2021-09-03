@@ -7,5 +7,5 @@ except ImportError:
 
 project = u'ess-notebooks'
 
-nbsphinx_prolog = nbsphinx_prolog.replace("XXXX",
-                                          "ess-notebooks")  # noqa: F405
+nbsphinx_prolog = nbsphinx_prolog.replace(  # noqa: F405
+    "XXXX", "ess-notebooks")

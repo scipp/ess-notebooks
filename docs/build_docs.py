@@ -2,6 +2,7 @@
 # Copyright (c) 2021 Scipp contributors (https://github.com/scipp)
 
 import os
+import sys
 from pathlib import Path
 import scippbuildtools as sbt
 
@@ -20,7 +21,7 @@ if __name__ == '__main__':
         # Run the make_config to configure data directories
         sys.path.append(os.path.join(docs_dir, '..', 'tools'))
         from make_config import make_config
-        make_config(root=data_dir)
+        make_config(root=builder._data_dir)
 
     if 'PYTHONPATH' in os.environ:
         os.environ['PYTHONPATH'] += ':' + str(docs_dir)
