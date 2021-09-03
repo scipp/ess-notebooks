@@ -18,7 +18,7 @@ trigger:
 pr: none
 
 extends:
-  template: stages.yml@SharedPipelines
+  template: pipelines/stages.yml@SharedPipelines
   parameters:
     verbose: ${{ parameters.verbose }}
     gh_pages_subdirectory: 'ess-notebooks'
