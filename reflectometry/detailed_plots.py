@@ -60,21 +60,27 @@ if __name__ == '__main__':
     t = x1 / v
 
     def trace(x, x0):
-        return z0 + (
-            (x - x0) * ((-a * (x1 - x0) ** 2) / (2 * v ** 2) - z0 + z1)
-        ) * 1 / (x1 - x0) + (a * (x - x0) ** 2) / (2 * v ** 2)
+        return z0 + ((x - x0) * (
+            (-a * (x1 - x0)**2) /
+            (2 * v**2) - z0 + z1)) * 1 / (x1 - x0) + (a *
+                                                      (x - x0)**2) / (2 * v**2)
 
     def dtrace(x, x0):
-        return ((-a * (x1 - x0) ** 2) / (2 * v ** 2) - z0 + z1) * 1 / (x1 - x0) + a * (x - x0) / (v ** 2)
+        return ((-a * (x1 - x0)**2) /
+                (2 * v**2) - z0 + z1) * 1 / (x1 - x0) + a * (x - x0) / (v**2)
 
-    x = np.linspace(0.00001, x1-0.01, 1000)
-    x_diff = np.linspace(0.4, x1-0.01, 1000)
-    z = np.linspace(0.00001, z1-0.001, 1000)
+    x = np.linspace(0.00001, x1 - 0.01, 1000)
+    x_diff = np.linspace(0.4, x1 - 0.01, 1000)
+    z = np.linspace(0.00001, z1 - 0.001, 1000)
 
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.plot(x, trace(x, 0), c='#0173B2')
     ax.plot(x, x * dtrace(0, 0), c='#DE8F05')
-    ax.plot(x, np.linspace(0.00001, trace(x, 0)[-1], 1000), ls='--', c='#029E73')
+    ax.plot(x,
+            np.linspace(0.00001,
+                        trace(x, 0)[-1], 1000),
+            ls='--',
+            c='#029E73')
     ax.set_xlim(-1, 4.8)
     ax.set_ylim(-0.3, 1.5)
     rectangle = plt.Rectangle((-0.75, -0.25),
@@ -83,11 +89,18 @@ if __name__ == '__main__':
                               ec='k',
                               fc=(1, 0, 0, 0))
     ax.add_patch(rectangle)
-    rectangle = plt.Rectangle((x1,0.3), 0.4, 1, ec='k', fc=(1, 0, 0, 0))
-    ax.text(0, -0.125, 'Sample', horizontalalignment='center',
+    rectangle = plt.Rectangle((x1, 0.3), 0.4, 1, ec='k', fc=(1, 0, 0, 0))
+    ax.text(0,
+            -0.125,
+            'Sample',
+            horizontalalignment='center',
             verticalalignment='center')
-    ax.text(x1+0.2, 0.8, 'Detector', horizontalalignment='center',
-            verticalalignment='center', rotation='vertical')
+    ax.text(x1 + 0.2,
+            0.8,
+            'Detector',
+            horizontalalignment='center',
+            verticalalignment='center',
+            rotation='vertical')
     ax.add_patch(rectangle)
     ax.set_xlabel('$x$/m')
     ax.set_ylabel('$z$/m')
