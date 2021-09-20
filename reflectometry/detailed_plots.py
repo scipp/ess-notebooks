@@ -1,6 +1,5 @@
 if __name__ == '__main__':
-    from collections import OrderedDict
-    from matplotlib import rcParams, cycler
+    from matplotlib import rcParams
 
     FONTSIZE = 20
     NEARLY_BLACK = "#161616"
@@ -26,8 +25,8 @@ if __name__ == '__main__':
         "mathtext.fontset": "custom",
         "font.size": FONTSIZE,
         "font.family": "sans-serif",
-        "font.serif" : "Helvetica",
-        #"text.usetex": True,
+        "font.serif": "Helvetica",
+        # "text.usetex": True,
         "savefig.bbox": "tight",
         "axes.facecolor": LIGHT_GREY,
         "axes.labelpad": 10.0,
@@ -49,9 +48,9 @@ if __name__ == '__main__':
 
     import numpy as np
     import matplotlib.pyplot as plt
-    from scipy.constants import g, h, neutron_mass
+    from scipy.constants import g
     from scipy.special import erf
-    #import _fig_params
+    # import _fig_params
 
     a = -g
     v = 20
@@ -78,7 +77,11 @@ if __name__ == '__main__':
     ax.plot(x, np.linspace(0.00001, trace(x, 0)[-1], 1000), ls='--', c='#029E73')
     ax.set_xlim(-1, 4.8)
     ax.set_ylim(-0.3, 1.5)
-    rectangle = plt.Rectangle((-0.75,-0.25), 1.5, 0.25, ec='k', fc=(1, 0, 0, 0))
+    rectangle = plt.Rectangle((-0.75, -0.25),
+                              1.5,
+                              0.25,
+                              ec='k',
+                              fc=(1, 0, 0, 0))
     ax.add_patch(rectangle)
     rectangle = plt.Rectangle((x1,0.3), 0.4, 1, ec='k', fc=(1, 0, 0, 0))
     ax.text(0, -0.125, 'Sample', horizontalalignment='center',
