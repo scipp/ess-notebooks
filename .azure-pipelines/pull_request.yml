@@ -1,3 +1,17 @@
+parameters:
+- name: verbose
+  displayName: Verbose
+  type: boolean
+  default: false
+
+resources:
+  repositories:
+  - repository: SharedPipelines
+    name: scipp/pipelines
+    type: github
+    endpoint: scipp
+    ref: main
+
 trigger:
   branches:
     exclude:
@@ -9,13 +23,14 @@ pr:
     include:
       - '*'
 
-variables:
-  is_release: $[eq(variables['System.PullRequest.TargetBranch'], 'release')]
-  target_branch: $[variables['System.PullRequest.TargetBranch']]
-
-stages:
-  - stage: 'notebook_tests'
-    displayName: 'notebook tests'
-
-    jobs:
-      - template: test_notebooks.yml
+extends:
+  template: stages.yml@SharedPipelines
+  parameters:
+    verbose: ${{ parameters.verbose }}
+    conda_channels: '--channel scipp'
+    gh_pages_subdirectory: 'ess-notebooks'
+    config:
+      linux:
+        py_versions: ['3.7']
+        conda_env: 'ess-notebooks.yml'
+    build_package: false
