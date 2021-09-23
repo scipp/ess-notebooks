@@ -19,3 +19,4 @@ dependencies:
   - python
   - psutil
   - pythreejs
+  - ipykernel = 6.3.1  # issue with pythreejs 3d plotting
