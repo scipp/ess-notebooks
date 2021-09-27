@@ -1,4 +1,4 @@
-name: ess-notebooks-stable
+name: ess-notebooks
 
 channels:
   - conda-forge
@@ -14,8 +14,9 @@ dependencies:
   - git
   - scippwidgets
   - sphinx>=1.6
-  - sphinx_rtd_theme
+  - sphinx_rtd_theme=0.5.2 # 1.0.0 broken CSS?
   - nbsphinx
   - python
   - psutil
   - pythreejs
+  - ipykernel = 6.3.1  # issue with pythreejs 3d plotting

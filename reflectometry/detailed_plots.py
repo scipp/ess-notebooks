@@ -54,29 +54,33 @@ if __name__ == '__main__':
 
     a = -g
     v = 20
-    z1 = 4.2
-    y0 = 0
-    y1 = 1
-    t = z1 / v
+    x1 = 4.2
+    z0 = 0
+    z1 = 1
+    t = x1 / v
 
-    def trace(z, z0):
-        return y0 + ((z - z0) * (
-            (-a * (z1 - z0)**2) /
-            (2 * v**2) - y0 + y1)) * 1 / (z1 - z0) + (a *
-                                                      (z - z0)**2) / (2 * v**2)
+    def trace(x, x0):
+        return z0 + ((x - x0) * (
+            (-a * (x1 - x0)**2) /
+            (2 * v**2) - z0 + z1)) * 1 / (x1 - x0) + (a *
+                                                      (x - x0)**2) / (2 * v**2)
 
-    def dtrace(z, z0):
-        return ((-a * (z1 - z0)**2) /
-                (2 * v**2) - y0 + y1) * 1 / (z1 - z0) + a * (z - z0) / (v**2)
+    def dtrace(x, x0):
+        return ((-a * (x1 - x0)**2) /
+                (2 * v**2) - z0 + z1) * 1 / (x1 - x0) + a * (x - x0) / (v**2)
 
-    z = np.linspace(0.00001, z1 - 0.01, 1000)
-    z_diff = np.linspace(0.4, z1 - 0.01, 1000)
-    y = np.linspace(0.00001, y1 - 0.001, 1000)
+    x = np.linspace(0.00001, x1 - 0.01, 1000)
+    x_diff = np.linspace(0.4, x1 - 0.01, 1000)
+    z = np.linspace(0.00001, z1 - 0.001, 1000)
 
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax.plot(z, trace(z, 0))
-    ax.plot(z, z * dtrace(0, 0))
-    ax.plot(z, np.linspace(0.00001, trace(z, 0)[-1], 1000), ls='--')
+    ax.plot(x, trace(x, 0), c='#0173B2')
+    ax.plot(x, x * dtrace(0, 0), c='#DE8F05')
+    ax.plot(x,
+            np.linspace(0.00001,
+                        trace(x, 0)[-1], 1000),
+            ls='--',
+            c='#029E73')
     ax.set_xlim(-1, 4.8)
     ax.set_ylim(-0.3, 1.5)
     rectangle = plt.Rectangle((-0.75, -0.25),
@@ -85,26 +89,26 @@ if __name__ == '__main__':
                               ec='k',
                               fc=(1, 0, 0, 0))
     ax.add_patch(rectangle)
-    rectangle = plt.Rectangle((z1, 0.3), 0.4, 1, ec='k', fc=(1, 0, 0, 0))
+    rectangle = plt.Rectangle((x1, 0.3), 0.4, 1, ec='k', fc=(1, 0, 0, 0))
     ax.text(0,
             -0.125,
             'Sample',
             horizontalalignment='center',
             verticalalignment='center')
-    ax.text(z1 + 0.2,
+    ax.text(x1 + 0.2,
             0.8,
             'Detector',
             horizontalalignment='center',
             verticalalignment='center',
             rotation='vertical')
     ax.add_patch(rectangle)
-    ax.set_xlabel('$z$/m')
-    ax.set_ylabel('$y$/m')
+    ax.set_xlabel('$x$/m')
+    ax.set_ylabel('$z$/m')
     fig.savefig('gravity.png')
     plt.close(fig)
 
-    beam_size = 0.01
-    sample_size = 0.1
+    beam_size = 0.002
+    sample_size = 0.01
     theta = np.deg2rad(np.linspace(0.5, 1.5, 1000))
 
     beam_on_sample = beam_size / np.sin(theta)
@@ -112,11 +116,13 @@ if __name__ == '__main__':
     scale_factor = erf((sample_size / beam_on_sample * fwhm_to_std))
 
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax.plot(np.rad2deg(theta), beam_on_sample)
+    ax.plot(np.rad2deg(theta), beam_on_sample, c='#0173B2')
     ax2 = ax.twinx()
-    ax2.plot(np.rad2deg(theta), scale_factor, c='#ff7f0e')
-    ax.set_ylabel('Beam size on sample/m')
-    ax2.set_ylabel('Scale factor')
+    ax2.plot(np.rad2deg(theta), scale_factor, c='#DE8F05')
+    ax.set_ylabel('Beam size on sample/m', color='#0173B2')
+    ax2.set_ylabel('Scale factor', color='#DE8F05')
+    ax.tick_params(axis='y', colors='#0173B2')
+    ax2.tick_params(axis='y', colors='#DE8F05')
     ax.set_xlabel(r'$\theta$/deg')
     fig.savefig('beam_size.png')
     plt.close(fig)
