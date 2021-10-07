@@ -1,0 +1,319 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "enhanced-issue",
+   "metadata": {},
+   "source": [
+    "# Amor Reduction\n",
+    "\n",
+    "## How to start:\n",
+    "\n",
+    "Before starting you must:\n",
+    "\n",
+    "- Have conda installed\n",
+    "- `conda env create -f ess-notebooks.yml python=3.7`\n",
+    "\n",
+    "The [yaml environment file](https://raw.githubusercontent.com/scipp/ess-notebooks/main/ess-notebooks.yml) is part of this repository.\n",
+    "\n",
+    "## What will this notebook show?\n",
+    "\n",
+    "The notebook will show how to use the `ess.amor.AmorData`, `ess.amor.AmorReference` and `ess.amor.Normalisation` classes for the reduction of data collected at the Amor instrument at PSI ([API level documentation](https://scipp.github.io/ess/instruments/amor/amor_data.html) for these classes is available). \n",
+    "To achieve this, we will reduce the following data files, [sample.nxs](https://github.com/scipp/ess-notebooks-data/raw/main/ess/amor/sample.nxs) and [reference.nxs](https://github.com/scipp/ess-notebooks-data/raw/main/ess/amor/references.nxs), and then normalise the sample data (with respect to the reference data). \n",
+    "\n",
+    "## Reduction\n",
+    "\n",
+    "Before, we begin, we should import then necessary modules. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "virgin-intake",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "import dataconfig\n",
+    "import numpy as np\n",
+    "import scipp as sc\n",
+    "import scippneutron as scn\n",
+    "from ess.amor import AmorData, AmorReference, Normalisation, tools"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "assured-emergency",
+   "metadata": {},
+   "source": [
+    "We can then define some information about the reduction, for inclusion in the final `.ort` file."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "hollywood-absolute",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "name = 'Andrew McCluskey/andrew.mccluskey@ess.eu'\n",
+    "affiliation = 'European Spallation Source'\n",
+    "data_owner = 'Jochen Stahn, PSI'\n",
+    "experiment_id = 'test_0001'\n",
+    "experiment_date = '2020-06-21'\n",
+    "sample_description = 'Ni-Ti Multilayer'\n",
+    "notebook_file = 'amor_reduction.ipynb'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1321f6e1",
+   "metadata": {},
+   "source": [
+    "The below cell enables the data to be pulled from the [ess-notebook-data](https://github.com/scipp/ess-notebooks-data) repository for the online documentation. \n",
+    "For local data `data_file` should be changed to the path to the experimental file and `reference_file` to that for the reference supermirror dataset. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2f2ba06b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "local_data_path = os.path.join('ess-notebooks', 'amor')\n",
+    "data_dir = os.path.join(dataconfig.data_root, local_data_path)\n",
+    "data_file = os.path.join(data_dir, 'sample.nxs')\n",
+    "reference_file = os.path.join(data_dir, 'reference.nxs')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "operational-scotland",
+   "metadata": {},
+   "source": [
+    "The `AmorData` class will take the loaded NeXus file or the NeXus file itself and perform the reduction steps to obtain the reflected intensity as a function of $q_z$, including accounting for aspects such as gravity. \n",
+    "The `sample_angle_offset` allows the angular offset of the sample with respect to the horizon to be accounted for."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "separate-alexandria",
+   "metadata": {
+    "scrolled": false
+   },
+   "outputs": [],
+   "source": [
+    "sample = AmorData(data_file, \n",
+    "                  reduction_creator=name, \n",
+    "                  data_owner=data_owner, \n",
+    "                  experiment_id=experiment_id, \n",
+    "                  experiment_date=experiment_date, \n",
+    "                  sample_description=sample_description, \n",
+    "                  reduction_file=notebook_file, \n",
+    "                  reduction_creator_affiliation=affiliation,\n",
+    "                  sample_angle_offset=0.04 * sc.units.deg, \n",
+    "                  sample_size=0.1*sc.units.m)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "naval-landscape",
+   "metadata": {},
+   "source": [
+    "Some [detector](https://scipp.github.io/ess/techniques/reflectometry/data.html#ess.reflectometry.data.ReflData.detector_masking) and [wavelength masking](https://scipp.github.io/ess/instruments/amor/amor_data.html#ess.amor.amor_data.AmorData.wavelength_masking) can then be performed."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "embedded-birmingham",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sample.detector_masking(y_min=0 * sc.units.m, y_max=100e-3 * sc.units.m)\n",
+    "sample.wavelength_masking()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "93b92380",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "scn.instrument_view(sample.data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "adjacent-layout",
+   "metadata": {},
+   "source": [
+    "The `AmorReference` class reads the reference supermirror measurement, and will perform the necessary corrections.\n",
+    "For this measurement, no angular offset is required. \n",
+    "Again, detector and wavelength masking is performed."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "proud-silly",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "reference = AmorReference(reference_file)\n",
+    "reference.detector_masking(y_min=0 * sc.units.m, y_max=100e-3 * sc.units.m)\n",
+    "reference.wavelength_masking()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "substantial-doubt",
+   "metadata": {},
+   "source": [
+    "For the normalisation of the sample, we use the `Normalisation` class."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "close-mouth",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "norm = Normalisation(sample, reference)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "broke-olympus",
+   "metadata": {},
+   "source": [
+    "With this object, there is the choice to bin in the $\\lambda$/$\\theta$-space or the $q_z$-space. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "textile-moscow",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "bins = (\n",
+    "    sc.linspace(\n",
+    "        dim='wavelength', \n",
+    "        start=2.5, \n",
+    "        stop=15, \n",
+    "        num=50, \n",
+    "        unit=sc.units.angstrom), \n",
+    "    sc.linspace(\n",
+    "        dim='theta',\n",
+    "        start=0.6, \n",
+    "        stop=1.25, \n",
+    "        num=50,\n",
+    "        unit=sc.units.deg)\n",
+    "    )\n",
+    "lambda_theta = norm.wavelength_theta_bin(bins)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ambient-string",
+   "metadata": {},
+   "source": [
+    "The data binned in $\\lambda$/$\\theta$-space can be investigated and plotted."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "above-contractor",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "lambda_theta"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "49c9bea6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sc.plot(lambda_theta)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "knowing-ukraine",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "q = norm.q_bin(tools.q_grid())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "stuck-return",
+   "metadata": {},
+   "source": [
+    "As can be done for the $q_z$-binned data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "closing-recording",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sc.plot(sc.log10(q))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "seeing-block",
+   "metadata": {},
+   "source": [
+    "This data can be written to an [ORSO](https://reflectometry.org)-compatible [data file](./output.ort). "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "advanced-dragon",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "norm.write_reflectometry('output.ort', tools.q_grid())"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.10"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
